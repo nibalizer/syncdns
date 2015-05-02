@@ -1,0 +1,8 @@
+"cloud.nibalizer.com.":
+  - name: "staypuft.cloud.nibalizer.com."
+    type: "A"
+    data: "15.126.240.46"
+  - name: "wob.cloud.nibalizer.com."
+    type: "A"
+    data: "15.126.129.203"
+
