@@ -1,3 +1,4 @@
+import sys
 import os
 import yaml
 
@@ -5,7 +6,7 @@ from designateclient.v1 import Client
 from designateclient.v1.records import Record
 
 
-def sync_record(config_record, records_map, noop):
+def sync_record(config_record, domain_id, records_map, noop):
     c = config_record
     # Handle existence
     if records_map.get(config_record['name']) is None:
@@ -32,7 +33,7 @@ def sync_record(config_record, records_map, noop):
             print "Would have pushed an update to the record: {0}".format(d)
         else:
             print "Pushing an update to the record: {0}".format(d)
-            d  = client.records.create(domain_id, d)
+            d  = client.records.update(domain_id, d)
 
 
 
@@ -53,6 +54,13 @@ if __name__ == "__main__":
     with open(config_file) as f:
         config = yaml.load(f.read())
     f.closed
+
+    # proccess command line ops
+    if '--noop' in sys.argv:
+        print "Running in noop mode"
+        noop = True
+    else:
+        noop = False
 
     # Create an instance of the client
     client = Client(
@@ -88,8 +96,7 @@ if __name__ == "__main__":
         for config_record in config_records:
             c = config_record
             print "Type: %s, Data: %s, Name: %s" % (c['type'], c['data'], c['name'])
-            if os.environ.get("SYNC_DNS") == 'noop':
-                sync_record(config_record, records_map, noop=True)
+            sync_record(config_record, domain.id, records_map, noop=noop)
 
 
 
