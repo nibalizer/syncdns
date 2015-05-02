@@ -17,6 +17,6 @@ python syndns.py --noop
 
 If everything looks good:
 
-python syndns.py --noop
+python syndns.py
 
 
